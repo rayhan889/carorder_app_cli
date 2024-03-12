@@ -204,9 +204,27 @@ int main()
                             }
                         }while(option!=7);
                     }
-                    else
-                        cout << "Anda keluar..." <<  endl;
+                    break;
                 }
+                case 2:
+                    {
+                        system("cls");
+                        welcome();
+                        cout << "                     ====================================" << endl;
+                        cout << "                     |             User Login            |" << endl;
+                        cout << "                     ====================================" << endl;
+                        printf("	Masukkan nama anda : ");
+                        cin.ignore();
+                        getline(cin, name_input);
+
+                        if(!name_input.empty())
+                        {
+                            dashboardUser(name_input);
+                            cout << "	Masukkan pilihanmu : ";
+                            cin >> option;
+                        }
+                        break;
+                    }
         }
     }while(option!=0);
 
