@@ -19,7 +19,15 @@ struct DriverNode {
     string address;
     char gender;
     Date birthdate;
-    DriverNode* next;
+    DriverNode *next;
+};
+
+struct OrderNode {
+    string id;
+    string name;
+    DriverNode *driver;
+    string plate_no;
+    string destination;
 };
 
 class Driver
