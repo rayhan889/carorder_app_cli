@@ -6,6 +6,7 @@
 using namespace std;
 
 string admins[]={"Anies", "Ganjar", "Prabowo"};
+bool is_admin_loggedIn=false;
 
 struct Date {
     int day;
@@ -33,6 +34,7 @@ struct OrderNode {
     string nama;
     DriverNode driver;
     string destination;
+    OrderNode *next;
 };
 
 class Driver
@@ -45,11 +47,19 @@ class Driver
             head=NULL;
             tail=NULL;
         }
+        DriverNode *getHead() const
+        {
+            return head;
+        }
+        DriverNode *getTail() const
+        {
+            return tail;
+        }
         void createNode(const string &name, const string &address, char gender, const Date &birthdate, const Car &car);
         void addForm();
         void display();
         void displayOne(DriverNode *data);
-        struct DriverNode *searchOne(const string &id);
+        DriverNode *searchOne(const string &id);
         string incDuplicate(const string &id);
         void paginate();
         int countNodes();
@@ -70,21 +80,24 @@ class Order
             front=rear=NULL;
             driver=d;
         }
+        DriverNode *getDriverClassHead()
+        {
+            return driver->getHead();
+        }
+        DriverNode *getDriverClassTail()
+        {
+            return driver->getTail();
+        }
         void displayAllDrivers()
         {
             if(driver)
-            {
                 driver->display();
-                getch();
-            }
             else
-            {
                 cout << "	Class Driver tidak terinisialisasi " << endl;
-                getch();
-            }
         }
-        void enqueue(const string &name, const DriverNode &driver, const string &destination);
-        void orderForm();
+        void enqueue(const string &name, const DriverNode *driver, const string &destination);
+        void orderForm(const DriverNode *driver);
+        void paginateAllDrivers();
         void history();
         int dequeue();
         void display();
@@ -95,7 +108,8 @@ void welcome();
 void dashboardAdmin(const string &admin_name);
 void dashboardUser(const string &user_name);
 bool isAdmin(string);
-string hashID(const string &name, char gender, Date date, int last_digit);
+string generateDriverID(const string &name, char gender, Date date, int last_digit);
+string generateOrderID(const string &plate, const string &id_driver, const string &destination);
 string concatenateInts(int, int, int, int);
 // FUNCTION PROPS
 
@@ -242,6 +256,7 @@ int main()
 
                         if(!name_input.empty())
                         {
+                            is_admin_loggedIn=false;
                             do
                             {
                                 dashboardUser(name_input);
@@ -251,7 +266,7 @@ int main()
                                 switch(option)
                                 {
                                     case 1:
-                                        o.orderForm();
+                                        o.paginateAllDrivers();
                                         break;
                                 }
                             }while(option!=3);
@@ -318,6 +333,7 @@ bool isAdmin(string input)
         if(input==a)
         {
             found=true;
+            is_admin_loggedIn=true;
             break;
         }
     }
@@ -335,7 +351,7 @@ string concatenateInts(int first, int second, int third, int fourth)
     return result;
 }
 
-string hashID(const string &name, char gender, Date date, int last_digit)
+string generateDriverID(const string &name, char gender, Date date, int last_digit)
 {
     char first_letter='\0';
     char last_letter='\0';
@@ -377,6 +393,43 @@ string hashID(const string &name, char gender, Date date, int last_digit)
     id=concatenateInts(two_first_digit, third_digit, fourth_digit, last_digit);
 
     return id;
+}
+
+string generateOrderID(const string &plate, const string &id_driver, const string &destination)
+{
+    string finalllllllll_id;
+    // ID KE 1 MA 2
+    char first_letter=toupper(plate[0]);
+
+    int first_two_digit=0;
+
+    if(isalpha(first_letter))
+        first_two_digit=first_letter - 'A' + 1;
+
+    string first_two_digit_str=to_string(first_two_digit);
+    string final_first_twooohhhhh=first_two_digit<10 ? "0"+first_two_digit_str : first_two_digit_str;
+
+    // ID KE 3 4 5 6 7
+    string five_more_digits_str=id_driver;
+
+    // 2 LAST DIGITS yaituuu ke 8 dan 9
+    string last_two_letter_of_destination_str=destination.substr(destination.length()-2);
+    char eight_digit_ch=last_two_letter_of_destination_str[0];
+    char ninth_digit_ch=last_two_letter_of_destination_str[1];
+
+    int eight_digit=0;
+    int ninth_digit=0;
+
+    if(isalpha(eight_digit_ch))
+        eight_digit=eight_digit_ch - 'A' + 1;
+
+    if(isalpha(ninth_digit_ch))
+        ninth_digit=ninth_digit_ch - 'A' + 1;
+
+    string eight_digit_str=to_string(eight_digit);
+    string ninth_digit_str=to_string(ninth_digit);
+
+    finalllllllll_id=first_two_digit_str+five_more_digits_str+eight_digit_str+ninth_digit_str;
 }
 
 // DRIVER CLASS PROPS
@@ -453,7 +506,7 @@ void Driver::createNode(const string &name, const string &address, char gender, 
     new_node=new DriverNode;
     tail=head;
 
-    coded_id=hashID(name, gender, birthdate, 0);
+    coded_id=generateDriverID(name, gender, birthdate, 0);
     found_node=searchOne(coded_id);
 
     if(found_node!=NULL)
@@ -811,14 +864,102 @@ int Driver::countNodes()
 // DRIVER CLASS PROPS
 
 // ORDER CLASS PROPS
-void Order::orderForm()
+void Order::enqueue(const string &name, const DriverNode *driver, const string &destination)
 {
-    system("cls");
-	welcome();
-	cout << "                     ====================================" << endl;
-	cout << "                     |             Order Go-car          |" << endl;
-	cout << "                     ====================================" << endl;
-    cout << endl;
-    displayAllDrivers();
+    string coded_id;
+    OrderNode *new_node;
+    new_node=new OrderNode;
+    if(new_node==NULL)
+        cout << "\n	Antrian Penuh" << endl;
+    else
+    {
+        coded_id=generateOrderID((*driver).car.plate_num, (*driver).id, destination);
+
+        (*new_node).id=coded_id;
+        (*new_node).nama=name;
+        (*new_node).destination=destination;
+        (*new_node).next=NULL;
+    }
+}
+
+void Order::orderForm(const DriverNode *driver)
+{
+    string input_name, input_destination;
+
+    cout << "\n	Masukkan Nama Anda : ";
+    cin.ignore();
+    getline(cin, input_name);
+
+    cout << "\n	Masukkan Tujuan Anda : ";
+    cin.ignore();
+    getline(cin, input_destination);
+
+
+}
+
+void Order::paginateAllDrivers()
+{
+    DriverNode *current=getDriverClassHead();
+    int option;
+
+    if(current!=NULL)
+    {
+        do
+        {
+            system("cls");
+            welcome();
+            cout << "                     ====================================" << endl;
+            cout << "                     |           Pilih Driver Anda       |" << endl;
+            cout << "                     ====================================" << endl;
+            cout << endl;
+            cout << "	ID                  : "<<(*current).id<<endl;
+            cout << "	Nama                : "<<(*current).name<<endl;
+            cout << "	Alamat              : "<<(*current).address<<endl;
+            cout << "	Jenis Kelamin (L/P) : "<<(*current).gender<<endl;
+            cout << "	Tanggal Lahir       : "<<(*current).birthdate.day<<" "<<(*current).birthdate.month<<" "<<(*current).birthdate.year<<endl;
+            cout << "	Merk Kendaraan      : "<<(*current).car.name<<endl;
+            cout << "	Plat Nomor          : "<<(*current).car.plate_num<<endl;
+
+            cout << "	1. Next " << endl;
+            cout << "	2. Previous " << endl;
+            cout << "	3. Order " << endl;
+            cout << "	4. Kembali " << endl;
+            cout << "	Masukkan pilihanmu : ";
+            scanf("%d", &option);
+
+            switch(option)
+            {
+                case 1:
+                    if((*current).next!=NULL)
+                        current=(*current).next;
+                    else
+                        current=getDriverClassHead();
+                    break;
+                case 2:
+                    if(current!=getDriverClassHead())
+                    {
+                        struct DriverNode *prev=getDriverClassHead();
+                        while((*prev).next!=current)
+                            prev=(*prev).next;
+                        current=prev;
+                    }
+                    else
+                        current=getDriverClassTail();
+                    break;
+                case 3:
+                    orderForm(current);
+                    break;
+                case 4:
+                    break;
+                default:
+                    printf("\nInvalid choice...");
+            }
+        }while(option!=4);
+    }
+    else
+    {
+        cout << "	List driver kosong. "<<endl;
+        getch();
+    }
 }
 // ORDER CLASS PROPS
