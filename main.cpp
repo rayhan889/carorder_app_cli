@@ -54,6 +54,20 @@ class Driver
         void updateNode(int option, T new_value, DriverNode *old_node);
 };
 
+class Order
+{
+    private:
+        OrderNode *front, *rear;
+    public:
+        Order()
+        {
+            front=rear=NULL;
+        }
+        void enqueue(const string &name, const DriverNode &driver, const string &plate, const string &destination);
+        int dequeue();
+        void display();
+};
+
 // FUNCTION PROPS
 void welcome();
 void dashboardAdmin(const string &admin_name);
