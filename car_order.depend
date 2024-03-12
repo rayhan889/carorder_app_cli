@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1710178936 source:d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\main.cpp
+	<iostream>
+	<string>
+	<cctype>
+	<conio.h>
+
