@@ -24,9 +24,9 @@ struct DriverNode {
 
 struct OrderNode {
     string id;
-    string name;
-    DriverNode *driver;
-    string plate_no;
+    string nama;
+    DriverNode driver;
+    string plate_num;
     string destination;
 };
 
