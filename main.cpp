@@ -63,10 +63,25 @@ class Order
 {
     private:
         OrderNode *front, *rear;
+        Driver *driver;
     public:
-        Order()
+        Order(Driver *d)
         {
             front=rear=NULL;
+            driver=d;
+        }
+        void displayAllDrivers()
+        {
+            if(driver)
+            {
+                driver->display();
+                getch();
+            }
+            else
+            {
+                cout << "	Class Driver tidak terinisialisasi " << endl;
+                getch();
+            }
         }
         void enqueue(const string &name, const DriverNode &driver, const string &destination);
         void orderForm();
@@ -87,7 +102,7 @@ string concatenateInts(int, int, int, int);
 int main()
 {
     Driver d;
-    Order o;
+    Order o(&d);
     int option;
     string name_input;
 
@@ -804,8 +819,6 @@ void Order::orderForm()
 	cout << "                     |             Order Go-car          |" << endl;
 	cout << "                     ====================================" << endl;
     cout << endl;
-    string input_name;
-    string driver_name;
-
+    displayAllDrivers();
 }
 // ORDER CLASS PROPS
