@@ -32,7 +32,6 @@ struct OrderNode {
     string id;
     string nama;
     DriverNode driver;
-    string plate_num;
     string destination;
 };
 
@@ -69,7 +68,7 @@ class Order
         {
             front=rear=NULL;
         }
-        void enqueue(const string &name, const DriverNode &driver, const string &plate, const string &destination);
+        void enqueue(const string &name, const DriverNode &driver, const string &destination);
         void orderForm();
         void history();
         int dequeue();
