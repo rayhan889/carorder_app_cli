@@ -83,118 +83,133 @@ int main()
     int option;
     string name_input;
 
-    welcome();
-
-    printf("	Masukkan nama anda : ");
-    getline(cin, name_input);
-    if(isAdmin(name_input))
+    do
     {
-        do
-        {
-            dashboardAdmin(name_input);
-            printf("\n	Masukkan opsi : ");
-            scanf("%d", &option);
+        system("cls");
+        welcome();
+        cout << "	1. Admin Dashboard" << endl;
+        cout << "	2. Pesan Go-car" << endl;
+        cout << "	0. Exit" << endl;
+        cout << endl;
+        cout << "	Masukkan pilihanmu : ";
+        cin >> option;
 
-            switch(option)
-            {
+        switch(option)
+        {
             case 1:
-                d.addForm();
-                break;
-            case 2:
                 {
-                    d.display();
-                    cout << "	Ketik enter untuk kembali!" << endl;
-                    getch();
-                }
-                break;
-            case 3:
-                {
-                    int count_nodes=d.countNodes();
-                    if(count_nodes==0)
-                    {
-                        cout << "	List driver kosong, tambahkan driver terlebih dahulu! "<<endl;
-                        getch();
-                    }
-                    else
-                    {
-                        DriverNode *found_driver;
-                        string id;
-                        cout << "	Masukkan ID Driver : ";
-                        cin.ignore(); getline(cin, id);
-                        found_driver=d.searchOne(id);
-                        if(found_driver==NULL)
-                        {
-                            cout << "\n	Driver dengan ID : "<<id<<" tidak ditemukan!!";
-                            getch();
-                        }
-                        else
-                            d.displayOne(found_driver);
-                    }
-                    break;
-                }
-            case 4:
-                d.paginate();
-                break;
-            case 5:
-                {
-                    d.updateForm();
-                    break;
-                }
-            case 6:
-                {
-                    int count_nodes=d.countNodes();
-                    if(count_nodes==0)
-                    {
-                        cout << "	List driver kosong, tambahkan driver terlebih dahulu! "<<endl;
-                        getch();
-                    }
-                    else
-                    {
-                        DriverNode *found_driver;
-                        string id;
-                        d.display();
-                        cout << "	Masukkan ID Driver : ";
-                        cin.ignore(); getline(cin, id);
-                        found_driver=d.searchOne(id);
-                        if(found_driver==NULL)
-                        {
-                            cout << "\n	Driver dengan ID : "<<id<<" tidak ditemukan!!";
-                            getch();
-                        }
-                        else
-                        {
-                            char y_n='N';
-                            cout << "\n	Yakin ingin menghapus? (Y/N) : ";
-                            cin>>y_n;
-                            if(y_n=='Y' || y_n=='y')
-                                d.deleteNode((*found_driver).id);
-                            else if(y_n=='N' || y_n=='n')
-                                cout << "\n	Data driver tidak jadi dihapus! ";
-                            else
-                                cout << "\n	Invalid choice! ";
-                            getch();
-                        }
-                    }
-                    break;
-                }
-            case 7:
-                exit(0);
-                break;
-            default:
-                printf("Invalid Choice...");
-            }
-        }while(option!=7);
-    }
-    else
-    {
-        do
-        {
-            dashboardUser(name_input);
-            printf("\n	Masukkan opsi : ");
-            scanf("%d", &option);
+                    system("cls");
+                    welcome();
+                    cout << "                     ====================================" << endl;
+                    cout << "                     |             Admin Login           |" << endl;
+                    cout << "                     ====================================" << endl;
+                    printf("	Masukkan nama anda : ");
+                    cin.ignore();
+                    getline(cin, name_input);
 
-        }while(option!=3);
-    }
+                    if(isAdmin(name_input))
+                    {
+                        do
+                        {
+                            dashboardAdmin(name_input);
+                            cout << "	Masukkan pilihanmu : ";
+                            cin >> option;
+
+                            switch(option)
+                            {
+                            case 1:
+                                d.addForm();
+                                break;
+                            case 2:
+                                {
+                                    d.display();
+                                    cout << "	Ketik enter untuk kembali!" << endl;
+                                    getch();
+                                }
+                                break;
+                            case 3:
+                                {
+                                    int count_nodes=d.countNodes();
+                                    if(count_nodes==0)
+                                    {
+                                        cout << "	List driver kosong, tambahkan driver terlebih dahulu! "<<endl;
+                                        getch();
+                                    }
+                                    else
+                                    {
+                                        struct DriverNode *found_driver;
+                                        string id;
+                                        cout << "	Masukkan ID Driver : ";
+                                        cin.ignore(); getline(cin, id);
+                                        found_driver=d.searchOne(id);
+                                        if(found_driver==NULL)
+                                        {
+                                            cout << "\n	Driver dengan ID : "<<id<<" tidak ditemukan!!";
+                                            getch();
+                                        }
+                                        else
+                                            d.displayOne(found_driver);
+                                    }
+                                    break;
+                                }
+                            case 4:
+                                d.paginate();
+                                break;
+                            case 5:
+                                {
+                                    d.updateForm();
+                                    break;
+                                }
+                            case 6:
+                                {
+                                    int count_nodes=d.countNodes();
+                                    if(count_nodes==0)
+                                    {
+                                        cout << "	List driver kosong, tambahkan driver terlebih dahulu! "<<endl;
+                                        getch();
+                                    }
+                                    else
+                                    {
+                                        struct DriverNode *found_driver;
+                                        string id;
+                                        d.display();
+                                        cout << "	Masukkan ID Driver : ";
+                                        cin.ignore(); getline(cin, id);
+                                        found_driver=d.searchOne(id);
+                                        if(found_driver==NULL)
+                                        {
+                                            cout << "\n	Driver dengan ID : "<<id<<" tidak ditemukan!!";
+                                            getch();
+                                        }
+                                        else
+                                        {
+                                            char y_n='N';
+                                            cout << "\n	Yakin ingin menghapus? (Y/N) : ";
+                                            cin>>y_n;
+                                            if(y_n=='Y' || y_n=='y')
+                                                d.deleteNode((*found_driver).id);
+                                            else if(y_n=='N' || y_n=='n')
+                                                cout << "\n	Data driver tidak jadi dihapus! ";
+                                            else
+                                                cout << "\n	Invalid choice! ";
+                                            getch();
+                                        }
+                                    }
+                                    break;
+                                }
+                            case 7:
+                                break;
+                            default:
+                                printf("Invalid Choice...");
+                            }
+                        }while(option!=7);
+                    }
+                    else
+                        cout << "Anda keluar..." <<  endl;
+                }
+        }
+    }while(option!=0);
+
     return 0;
 }
 
