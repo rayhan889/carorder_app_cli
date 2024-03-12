@@ -64,6 +64,8 @@ class Order
             front=rear=NULL;
         }
         void enqueue(const string &name, const DriverNode &driver, const string &plate, const string &destination);
+        void orderForm();
+        void history();
         int dequeue();
         void display();
 };
