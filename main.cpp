@@ -13,12 +13,18 @@ struct Date {
     int year;
 };
 
+struct Car {
+    string name;
+    string plate_num;
+};
+
 struct DriverNode {
     string id;
     string name;
     string address;
     char gender;
     Date birthdate;
+    Car car;
     DriverNode *next;
 };
 
@@ -40,7 +46,7 @@ class Driver
             head=NULL;
             tail=NULL;
         }
-        void createNode(const string &name, const string &address, char gender, const Date &birthdate);
+        void createNode(const string &name, const string &address, char gender, const Date &birthdate, const Car &car);
         void addForm();
         void display();
         void displayOne(DriverNode *data);
@@ -82,6 +88,7 @@ string concatenateInts(int, int, int, int);
 int main()
 {
     Driver d;
+    Order o;
     int option;
     string name_input;
 
@@ -221,9 +228,19 @@ int main()
 
                         if(!name_input.empty())
                         {
-                            dashboardUser(name_input);
-                            cout << "	Masukkan pilihanmu : ";
-                            cin >> option;
+                            do
+                            {
+                                dashboardUser(name_input);
+                                cout << "	Masukkan pilihanmu : ";
+                                cin >> option;
+
+                                switch(option)
+                                {
+                                    case 1:
+                                        o.orderForm();
+                                        break;
+                                }
+                            }while(option!=3);
                         }
                         break;
                     }
@@ -406,12 +423,14 @@ void Driver::displayOne(DriverNode *data)
     cout << "	Alamat              : "<<(*data).address<<endl;
     cout << "	Jenis Kelamin (L/P) : "<<(*data).gender<<endl;
     cout << "	Tanggal Lahir       : "<<(*data).birthdate.day<<" "<<(*data).birthdate.month<<" "<<(*data).birthdate.year<<endl;
+    cout << "	Merk Kendaraan      : "<<(*data).car.name<<endl;
+    cout << "	Plat Nomor          : "<<(*data).car.plate_num<<endl;
     cout << endl;
     cout << "	Ketik enter untuk kembali!";
     getch();
 }
 
-void Driver::createNode(const string &name, const string &address, char gender, const Date &birthdate)
+void Driver::createNode(const string &name, const string &address, char gender, const Date &birthdate, const Car &car)
 {
     DriverNode *new_node, *found_node;
     string coded_id;
@@ -434,6 +453,7 @@ void Driver::createNode(const string &name, const string &address, char gender, 
     (*new_node).address=address;
     (*new_node).gender=gender;
     (*new_node).birthdate=birthdate;
+    (*new_node).car=car;
     (*new_node).next=NULL;
 
     if(head==NULL)
@@ -459,6 +479,7 @@ void Driver::addForm()
     string name, address;
     char gender;
     Date birthdate;
+    Car car;
 
     cout << "	Masukkan nama                : ";
     cin.ignore();
@@ -473,7 +494,14 @@ void Driver::addForm()
     cout << "	Masukkan tgl lahir           : ";
     scanf("%d %d %d", &birthdate.day, &birthdate.month, &birthdate.year);
 
-    createNode(name, address, gender, birthdate);
+    cout << "	Merk Kendaraan               : ";
+    cin.ignore();
+    getline(cin, car.name);
+
+    cout << "	Plat Nomor                   : ";
+    getline(cin, car.plate_num);
+
+    createNode(name, address, gender, birthdate, car);
 
     cout << endl;
     cout << "	Berhasil menambahkan data!!";
@@ -507,7 +535,9 @@ void Driver::display()
             cout << "	Nama                : "<<(*current).name<<endl;
             cout << "	Alamat              : "<<(*current).address<<endl;
             cout << "	Jenis Kelamin (L/P) : "<<(*current).gender<<endl;
-            cout << "	Tanggal Lahir       : "<<(*current).birthdate.day<<" "<<(*current).birthdate.month<<" "<<(*current).birthdate.year;
+            cout << "	Tanggal Lahir       : "<<(*current).birthdate.day<<" "<<(*current).birthdate.month<<" "<<(*current).birthdate.year<<endl;
+            cout << "	Merk Kendaraan      : "<<(*current).car.name<<endl;
+            cout << "	Plat Nomor          : "<<(*current).car.plate_num;
             cout << endl;
             current=(*current).next;
         }
@@ -535,6 +565,8 @@ void Driver::paginate()
             cout << "	Alamat              : "<<(*current).address<<endl;
             cout << "	Jenis Kelamin (L/P) : "<<(*current).gender<<endl;
             cout << "	Tanggal Lahir       : "<<(*current).birthdate.day<<" "<<(*current).birthdate.month<<" "<<(*current).birthdate.year<<endl;
+            cout << "	Merk Kendaraan      : "<<(*current).car.name<<endl;
+            cout << "	Plat Nomor          : "<<(*current).car.plate_num<<endl;
 
             cout << "	1. Next " << endl;
             cout << "	2. Previous " << endl;
@@ -765,4 +797,16 @@ int Driver::countNodes()
 // DRIVER CLASS PROPS
 
 // ORDER CLASS PROPS
+void Order::orderForm()
+{
+    system("cls");
+	welcome();
+	cout << "                     ====================================" << endl;
+	cout << "                     |             Order Go-car          |" << endl;
+	cout << "                     ====================================" << endl;
+    cout << endl;
+    string input_name;
+    string driver_name;
+
+}
 // ORDER CLASS PROPS
