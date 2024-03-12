@@ -33,7 +33,7 @@ struct OrderNode {
 class Driver
 {
     private:
-        struct DriverNode *head, *tail;
+        DriverNode *head, *tail;
     public:
         Driver()
         {
@@ -43,7 +43,7 @@ class Driver
         void createNode(const string &name, const string &address, char gender, const Date &birthdate);
         void addForm();
         void display();
-        void displayOne(struct DriverNode *data);
+        void displayOne(DriverNode *data);
         struct DriverNode *searchOne(const string &id);
         string incDuplicate(const string &id);
         void paginate();
@@ -51,7 +51,7 @@ class Driver
         void updateForm();
         void deleteNode(const string &id);
         template <typename T>
-        void updateNode(int option, T new_value, struct DriverNode *old_node);
+        void updateNode(int option, T new_value, DriverNode *old_node);
 };
 
 // FUNCTION PROPS
@@ -59,7 +59,7 @@ void welcome();
 void dashboardAdmin(const string &admin_name);
 void dashboardUser(const string &user_name);
 bool isAdmin(string);
-string hashID(const string &name, char gender, struct Date date, int last_digit);
+string hashID(const string &name, char gender, Date date, int last_digit);
 string concatenateInts(int, int, int, int);
 // FUNCTION PROPS
 
@@ -103,7 +103,7 @@ int main()
                     }
                     else
                     {
-                        struct DriverNode *found_driver;
+                        DriverNode *found_driver;
                         string id;
                         cout << "	Masukkan ID Driver : ";
                         cin.ignore(); getline(cin, id);
@@ -136,7 +136,7 @@ int main()
                     }
                     else
                     {
-                        struct DriverNode *found_driver;
+                        DriverNode *found_driver;
                         string id;
                         d.display();
                         cout << "	Masukkan ID Driver : ";
@@ -255,7 +255,7 @@ string concatenateInts(int first, int second, int third, int fourth)
     return result;
 }
 
-string hashID(const string &name, char gender, struct Date date, int last_digit)
+string hashID(const string &name, char gender, Date date, int last_digit)
 {
     char first_letter='\0';
     char last_letter='\0';
@@ -303,7 +303,7 @@ string hashID(const string &name, char gender, struct Date date, int last_digit)
 
 string Driver::incDuplicate(const string &id)
 {
-    struct DriverNode *current = head;
+    DriverNode *current = head;
     string new_id;
     //cout << "\nID : " << id << " duplicate.." << endl;
     int max_num = stoi(id);
@@ -331,9 +331,9 @@ string Driver::incDuplicate(const string &id)
 }
 
 
-struct DriverNode *Driver::searchOne(const string &id)
+DriverNode *Driver::searchOne(const string &id)
 {
-    struct DriverNode *current=head;
+    DriverNode *current=head;
     while(current!=NULL)
     {
         if((*current).id==id)
@@ -344,7 +344,7 @@ struct DriverNode *Driver::searchOne(const string &id)
     return NULL;
 };
 
-void Driver::displayOne(struct DriverNode *data)
+void Driver::displayOne(DriverNode *data)
 {
     system("cls");
 	welcome();
@@ -364,7 +364,7 @@ void Driver::displayOne(struct DriverNode *data)
 
 void Driver::createNode(const string &name, const string &address, char gender, const Date &birthdate)
 {
-    struct DriverNode *new_node, *found_node;
+    DriverNode *new_node, *found_node;
     string coded_id;
     string new_inc_id;
 
@@ -439,7 +439,7 @@ void Driver::display()
 	cout << "                     |             List Driver           |" << endl;
 	cout << "                     ====================================" << endl;
     cout << endl;
-    struct DriverNode *current=head;
+    DriverNode *current=head;
     int no=1;
 
     if(current==NULL)
@@ -468,7 +468,7 @@ void Driver::display()
 
 void Driver::paginate()
 {
-    struct DriverNode *current=head;
+    DriverNode *current=head;
     int option;
 
     if(current!=NULL)
@@ -528,7 +528,7 @@ void Driver::paginate()
 
 void Driver::updateForm()
 {
-    struct DriverNode *current=head;
+    DriverNode *current=head;
 
     if(current==NULL)
     {
@@ -538,7 +538,7 @@ void Driver::updateForm()
     else
     {
         string id_input;
-        struct DriverNode *found_node;
+        DriverNode *found_node;
         system("cls");
         welcome();
         cout << "                     ====================================" << endl;
@@ -601,7 +601,7 @@ void Driver::updateForm()
                         }
                     case 4:
                         {
-                            struct Date input_birthdate;
+                            Date input_birthdate;
                             cout << "\n	Input Tanggal Lahir : ";
                             scanf("%d %d %d", &input_birthdate.day, &input_birthdate.month, &input_birthdate.year);
                             updateNode(4, input_birthdate, found_node);
@@ -626,7 +626,7 @@ void Driver::updateForm()
 }
 
 template <typename T>
-void Driver::updateNode(int option, T new_value, struct DriverNode *old_node)
+void Driver::updateNode(int option, T new_value, DriverNode *old_node)
 {
     int status=0;
 
@@ -677,7 +677,7 @@ void Driver::updateNode(int option, T new_value, struct DriverNode *old_node)
 
 void Driver::deleteNode(const string &id)
 {
-    struct DriverNode *current, *p;
+    DriverNode *current, *p;
     current=head;
     bool flag=false;
     p=NULL;
@@ -703,7 +703,7 @@ void Driver::deleteNode(const string &id)
 
 int Driver::countNodes()
 {
-    struct DriverNode *current=head;
+    DriverNode *current=head;
 
     int counter=0;
     while(current!=NULL)
