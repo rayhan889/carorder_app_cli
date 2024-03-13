@@ -105,7 +105,7 @@ class Order
         void paginateAllOrders();
         int countNodes();
         void history();
-        int dequeue();
+        OrderNode *dequeue();
         void display();
         void orderSummary(OrderNode *data);
 };
@@ -955,6 +955,22 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
     }
 }
 
+OrderNode *Order::dequeue()
+{
+    OrderNode *p;
+    OrderNode *x=NULL;
+    if(front==NULL)
+        cout << "	Pesanan masih kosong!"<<endl;
+    else
+    {
+        p=front;
+        front=front->next;
+        x=p;
+        delete p;
+    }
+    return x;
+}
+
 void Order::orderForm(DriverNode *driver)
 {
     string input_destination;
@@ -1075,6 +1091,20 @@ void Order::paginateAllOrders()
             cout << "	3. Kembali " << endl;
             cout << "	Masukkan pilihanmu : ";
             scanf("%d", &option);
+
+            switch(option)
+            {
+                case 1:
+                    cout << "Accept...";
+                    break;
+                case 2:
+                    cout << "Decline...";
+                    break;
+                case 3:
+                    break;
+                default:
+                    printf("\nInvalid choice...");
+            }
         }while(option!=3);
     }
 }
