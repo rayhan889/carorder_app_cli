@@ -105,6 +105,7 @@ class Order
         void history();
         int dequeue();
         void display();
+        void orderSummary(OrderNode *data);
 };
 
 // FUNCTION PROPS
@@ -927,6 +928,7 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
         new_node->nama=name_input;
         new_node->driver=driver;
         new_node->destination=destination;
+        new_node->order_time=makeTime();
         new_node->next=NULL;
 
         if(front==NULL)
@@ -936,6 +938,8 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
             rear->next=new_node;
             rear=new_node;
         }
+
+        orderSummary(new_node);
 
         cout << "\n	Order Berhasil Dilakukan!"<<endl;
         getch();
@@ -1017,5 +1021,21 @@ void Order::paginateAllDrivers()
         cout << "	List driver kosong. "<<endl;
         getch();
     }
+}
+
+void Order::orderSummary(OrderNode *data)
+{
+    system("cls");
+    welcome();
+    cout << "                     ====================================" << endl;
+    cout << "                     |           Rangkuman Order         |" << endl;
+    cout << "                     ====================================" << endl;
+    cout << endl;
+    cout << "	ID                  : "<<(*data).id<<endl;
+    cout << "	Nama Pelanggan      : "<<(*data).nama<<endl;
+    cout << "	Tujuan              : "<<(*data).destination<<endl;
+    cout << "	Nama Driver         : "<<(*data).driver->name<<endl;
+    cout << "	Mobil/Plat Nomor    : "<<(*data).driver->car.name<<"/"<<(*data).driver->car.plate_num<<endl;
+    cout << "	Waktu Order         : "<<(*data).order_time<<endl;
 }
 // ORDER CLASS PROPS
