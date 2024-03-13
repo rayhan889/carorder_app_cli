@@ -102,10 +102,10 @@ class Order
         void enqueue(const string &name, DriverNode *driver, const string &destination);
         void orderForm(DriverNode *driver);
         void paginateAllDrivers();
-        void paginateAllOrders();
+        void showFirstOrder();
         int countNodes();
         void history();
-        OrderNode *dequeue();
+        int dequeue();
         void display();
         void orderSummary(OrderNode *data);
 };
@@ -282,8 +282,12 @@ int main()
                                             getch();
                                             break;
                                         }
+                                    case 3:
+                                        {
+                                            o.showFirstOrder();
+                                        }
                                 }
-                            }while(option!=3);
+                            }while(option!=4);
                         }
                         break;
                     }
@@ -336,7 +340,8 @@ void dashboardUser(const string &user_name)
     cout << endl;
 	cout << "	1. Order " << endl;
 	cout << "	2. History Order Anda " << endl;
-	cout << "	3. Exit Program " << endl;
+	cout << "	3. coba hapus queue " << endl;
+	cout << "	4. Exit Program " << endl;
 }
 
 bool isAdmin(string input)
@@ -955,20 +960,18 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
     }
 }
 
-OrderNode *Order::dequeue()
+int Order::dequeue()
 {
     OrderNode *p;
-    OrderNode *x=NULL;
     if(front==NULL)
-        cout << "	Pesanan masih kosong!"<<endl;
+        return 0;
     else
     {
         p=front;
         front=front->next;
-        x=p;
         delete p;
     }
-    return x;
+    return 1;
 }
 
 void Order::orderForm(DriverNode *driver)
@@ -1064,10 +1067,11 @@ void Order::orderSummary(OrderNode *data)
     cout << "	Waktu Order         : "<<(*data).order_time<<endl;
 }
 
-void Order::paginateAllOrders()
+void Order::showFirstOrder()
 {
     OrderNode *current=front;
     int option;
+    char y_n;
 
     if(current!=NULL)
     {
@@ -1079,15 +1083,25 @@ void Order::paginateAllOrders()
             cout << "                     |    List Order(Pagination Mode)    |" << endl;
             cout << "                     ====================================" << endl;
             cout << endl;
-            cout << "	ID                  : "<<(*current).id<<endl;
-            cout << "	Nama Pelanggan      : "<<(*current).nama<<endl;
-            cout << "	Tujuan              : "<<(*current).destination<<endl;
-            cout << "	Nama Driver         : "<<(*current).driver->name<<endl;
-            cout << "	Mobil/Plat Nomor    : "<<(*current).driver->car.name<<"/"<<(*current).driver->car.plate_num<<endl;
-            cout << "	Waktu Order         : "<<(*current).order_time<<endl;
+            if(current!=NULL)
+            {
+                cout << "	ID                  : "<<(*current).id<<endl;
+                cout << "	Nama Pelanggan      : "<<(*current).nama<<endl;
+                cout << "	Tujuan              : "<<(*current).destination<<endl;
+                cout << "	Nama Driver         : "<<(*current).driver->name<<endl;
+                cout << "	Mobil/Plat Nomor    : "<<(*current).driver->car.name<<"/"<<(*current).driver->car.plate_num<<endl;
+                cout << "	Waktu Order         : "<<(*current).order_time<<endl;
+            }
+            else
+            {
+                cout << "	Tidak ada pesanan yang tersedia..." << endl;
+            }
 
-            cout << "	1. Accept " << endl;
-            cout << "	2. Reject " << endl;
+            if(current!=NULL)
+            {
+                cout << "	1. Approve " << endl;
+                cout << "	2. Reject " << endl;
+            }
             cout << "	3. Kembali " << endl;
             cout << "	Masukkan pilihanmu : ";
             scanf("%d", &option);
@@ -1095,16 +1109,63 @@ void Order::paginateAllOrders()
             switch(option)
             {
                 case 1:
-                    cout << "Accept...";
-                    break;
+                    {
+                        int status=0;
+                        cout << "	Approve pesanan? (Y/N)";
+                        cin >> y_n;
+
+                        if(y_n=='Y'||y_n=='y')
+                            status=dequeue();
+                        else
+                        {
+                            cout << "	Approving dibatalkan" << endl;
+                            getch();
+                        }
+
+                        if(status==1)
+                        {
+                             cout << "	Pesanan BERHASIL di approve" << endl;
+                             getch();
+                        }
+                        else
+                        {
+                            cout << "	Pesanan GAGAL di approve" << endl;
+                             getch();
+                        }
+                        break;
+                    }
                 case 2:
-                    cout << "Decline...";
-                    break;
+                    {
+                        int status=0;
+                        cout << "	Decline pesanan? (Y/N)";
+                        cin >> y_n;
+
+                        if(y_n=='Y'||y_n=='y')
+                            status=dequeue();
+                        else
+                        {
+                            cout << "	Decline dibatalkan" << endl;
+                            getch();
+                        }
+
+                        if(status==1)
+                        {
+                             cout << "	Pesanan BERHASIL di decline" << endl;
+                             getch();
+                        }
+                        else
+                        {
+                            cout << "	Pesanan GAGAL di decline" << endl;
+                             getch();
+                        }
+                        break;
+                    }
                 case 3:
                     break;
                 default:
                     printf("\nInvalid choice...");
             }
+            current=front;
         }while(option!=3);
     }
 }
