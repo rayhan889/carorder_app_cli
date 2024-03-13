@@ -242,11 +242,14 @@ int main()
                                     break;
                                 }
                             case 7:
+                                o.showFirstOrder();
+                                break;
+                            case 8:
                                 break;
                             default:
                                 printf("Invalid Choice...");
                             }
-                        }while(option!=7);
+                        }while(option!=8);
                     }
                     break;
                 }
@@ -283,11 +286,9 @@ int main()
                                             break;
                                         }
                                     case 3:
-                                        {
-                                            o.showFirstOrder();
-                                        }
+                                        break;
                                 }
-                            }while(option!=4);
+                            }while(option!=3);
                         }
                         break;
                     }
@@ -326,7 +327,8 @@ void dashboardAdmin(const string &admin_name)
 	cout << "	4. Tampilkan Data Driver (Pagination) " << endl;
 	cout << "	5. Update Data Driver " << endl;
 	cout << "	6. Hapus Data Driver " << endl;
-	cout << "	7. Exit Program " << endl;
+	cout << "	7. Cek Data Order Pelanggan " << endl;
+	cout << "	8. Exit Program " << endl;
 }
 
 void dashboardUser(const string &user_name)
@@ -340,7 +342,6 @@ void dashboardUser(const string &user_name)
     cout << endl;
 	cout << "	1. Order " << endl;
 	cout << "	2. History Order Anda " << endl;
-	cout << "	3. coba hapus queue " << endl;
 	cout << "	4. Exit Program " << endl;
 }
 
