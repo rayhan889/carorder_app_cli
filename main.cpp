@@ -2,6 +2,8 @@
 #include <string>
 #include <cctype>
 #include <conio.h>
+#include <chrono>
+#include <ctime>
 
 using namespace std;
 
@@ -33,8 +35,9 @@ struct DriverNode {
 struct OrderNode {
     string id;
     string nama;
-    DriverNode driver;
+    DriverNode *driver;
     string destination;
+    string order_time;
     OrderNode *next;
 };
 
@@ -96,8 +99,8 @@ class Order
             else
                 cout << "	Class Driver tidak terinisialisasi " << endl;
         }
-        void enqueue(const string &name, const DriverNode *driver, const string &destination);
-        void orderForm(const DriverNode *driver);
+        void enqueue(const string &name, DriverNode *driver, const string &destination);
+        void orderForm(DriverNode *driver);
         void paginateAllDrivers();
         void history();
         int dequeue();
@@ -112,6 +115,7 @@ bool isAdmin(string);
 string generateDriverID(const string &name, char gender, Date date, int last_digit);
 string generateOrderID(const string &plate, const string &id_driver, const string &destination);
 string concatenateInts(int, int, int, int);
+string makeTime();
 // FUNCTION PROPS
 
 int main()
@@ -464,6 +468,16 @@ string generateOrderID(const string &plate, const string &id_driver, const strin
 
     finalllllllll_id=first_two_digit_str+five_more_digits_str+eight_and_ninth_digits_str+last_digit;
     return finalllllllll_id;
+}
+
+string makeTime()
+{
+    auto end=chrono::system_clock::now();
+    string end_time_str;
+
+    time_t end_time=chrono::system_clock::to_time_t(end);
+
+    return end_time_str=ctime(&end_time);
 }
 
 // DRIVER CLASS PROPS
@@ -898,7 +912,7 @@ int Driver::countNodes()
 // DRIVER CLASS PROPS
 
 // ORDER CLASS PROPS
-void Order::enqueue(const string &name, const DriverNode *driver, const string &destination)
+void Order::enqueue(const string &name, DriverNode *driver, const string &destination)
 {
     string coded_id;
     OrderNode *new_node;
@@ -909,12 +923,26 @@ void Order::enqueue(const string &name, const DriverNode *driver, const string &
     {
         coded_id=generateOrderID((*driver).car.plate_num, (*driver).id, destination);
 
-        cout << "\n Order ID : " << coded_id << endl;
+        new_node->id=coded_id;
+        new_node->nama=name_input;
+        new_node->driver=driver;
+        new_node->destination=destination;
+        new_node->next=NULL;
+
+        if(front==NULL)
+            front=rear=new_node;
+        else
+        {
+            rear->next=new_node;
+            rear=new_node;
+        }
+
+        cout << "\n	Order Berhasil Dilakukan!"<<endl;
         getch();
     }
 }
 
-void Order::orderForm(const DriverNode *driver)
+void Order::orderForm(DriverNode *driver)
 {
     string input_destination;
 
