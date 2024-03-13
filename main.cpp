@@ -102,6 +102,8 @@ class Order
         void enqueue(const string &name, DriverNode *driver, const string &destination);
         void orderForm(DriverNode *driver);
         void paginateAllDrivers();
+        void paginateAllOrders();
+        int countNodes();
         void history();
         int dequeue();
         void display();
@@ -273,6 +275,13 @@ int main()
                                     case 1:
                                         o.paginateAllDrivers();
                                         break;
+                                    case 2:
+                                        {
+                                            o.display();
+                                            cout << "	Ketik enter untuk kembali!" << endl;
+                                            getch();
+                                            break;
+                                        }
                                 }
                             }while(option!=3);
                         }
@@ -1037,5 +1046,85 @@ void Order::orderSummary(OrderNode *data)
     cout << "	Nama Driver         : "<<(*data).driver->name<<endl;
     cout << "	Mobil/Plat Nomor    : "<<(*data).driver->car.name<<"/"<<(*data).driver->car.plate_num<<endl;
     cout << "	Waktu Order         : "<<(*data).order_time<<endl;
+}
+
+void Order::paginateAllOrders()
+{
+    OrderNode *current=front;
+    int option;
+
+    if(current!=NULL)
+    {
+        do
+        {
+            system("cls");
+            welcome();
+            cout << "                     ====================================" << endl;
+            cout << "                     |    List Order(Pagination Mode)    |" << endl;
+            cout << "                     ====================================" << endl;
+            cout << endl;
+            cout << "	ID                  : "<<(*current).id<<endl;
+            cout << "	Nama Pelanggan      : "<<(*current).nama<<endl;
+            cout << "	Tujuan              : "<<(*current).destination<<endl;
+            cout << "	Nama Driver         : "<<(*current).driver->name<<endl;
+            cout << "	Mobil/Plat Nomor    : "<<(*current).driver->car.name<<"/"<<(*current).driver->car.plate_num<<endl;
+            cout << "	Waktu Order         : "<<(*current).order_time<<endl;
+
+            cout << "	1. Accept " << endl;
+            cout << "	2. Reject " << endl;
+            cout << "	3. Kembali " << endl;
+            cout << "	Masukkan pilihanmu : ";
+            scanf("%d", &option);
+        }while(option!=3);
+    }
+}
+
+void Order::display()
+{
+    system("cls");
+	welcome();
+	cout << "                     ====================================" << endl;
+	cout << "                     |             Pesanan Anda          |" << endl;
+	cout << "                     ====================================" << endl;
+    cout << endl;
+    OrderNode *current=front;
+    int no=1;
+
+    if(current==NULL)
+    {
+        cout << "	Pesanan anda kosong, buat pesanan terlebih dahulu! "<<endl;
+        getch();
+    }
+    else
+    {
+        int count_orders=countNodes();
+        cout << "	Jumlah Pesanan : "<<count_orders<<endl;
+        while(current!=NULL)
+        {
+            cout << "     " << no++ << ". " << endl;
+            cout << "	ID                  : "<<(*current).id<<endl;
+            cout << "	Nama Pelanggan      : "<<(*current).nama<<endl;
+            cout << "	Tujuan              : "<<(*current).destination<<endl;
+            cout << "	Nama Driver         : "<<(*current).driver->name<<endl;
+            cout << "	Mobil/Plat Nomor    : "<<(*current).driver->car.name<<"/"<<(*current).driver->car.plate_num<<endl;
+            cout << "	Waktu Order         : "<<(*current).order_time<<endl;
+            cout << endl;
+            current=(*current).next;
+        }
+        cout << endl;
+    }
+}
+
+int Order::countNodes()
+{
+    OrderNode *current=front;
+
+    int counter=0;
+    while(current!=NULL)
+    {
+        counter++;
+        current=(*current).next;
+    }
+    return counter;
 }
 // ORDER CLASS PROPS
