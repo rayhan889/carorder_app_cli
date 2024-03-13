@@ -7,6 +7,7 @@ using namespace std;
 
 string admins[]={"Anies", "Ganjar", "Prabowo"};
 bool is_admin_loggedIn=false;
+string name_input;
 
 struct Date {
     int day;
@@ -118,7 +119,6 @@ int main()
     Driver d;
     Order o(&d);
     int option;
-    string name_input;
 
     do
     {
@@ -414,11 +414,12 @@ string generateOrderID(const string &plate, const string &id_driver, const strin
 
     // 2 LAST DIGITS yaituuu ke 8 dan 9
     string last_two_letter_of_destination_str=destination.substr(destination.length()-2);
-    char eight_digit_ch=last_two_letter_of_destination_str[0];
-    char ninth_digit_ch=last_two_letter_of_destination_str[1];
+    char eight_digit_ch=toupper(last_two_letter_of_destination_str[0]);
+    char ninth_digit_ch=toupper(last_two_letter_of_destination_str[1]);
 
     int eight_digit=0;
     int ninth_digit=0;
+    int eight_and_ninth_digits=0;
 
     if(isalpha(eight_digit_ch))
         eight_digit=eight_digit_ch - 'A' + 1;
@@ -426,10 +427,43 @@ string generateOrderID(const string &plate, const string &id_driver, const strin
     if(isalpha(ninth_digit_ch))
         ninth_digit=ninth_digit_ch - 'A' + 1;
 
-    string eight_digit_str=to_string(eight_digit);
-    string ninth_digit_str=to_string(ninth_digit);
+    eight_and_ninth_digits=eight_digit+ninth_digit;
 
-    finalllllllll_id=first_two_digit_str+five_more_digits_str+eight_digit_str+ninth_digit_str;
+    string eight_and_ninth_digits_str=to_string(eight_and_ninth_digits);
+
+    // LASTT DIGIT
+    int total_sum_of_post=0;
+    string total_sum_of_post_str;
+    string last_digit;
+    int len=name_input.size();
+    int post_of_letters_name[len];
+
+    if(name_input.size()>0)
+    {
+        for(int i=0;i<len;++i)
+        {
+            char uppercase_char=toupper(name_input[i]);
+
+            post_of_letters_name[i]=uppercase_char - 'A' + 1;
+        }
+
+        for(int i=0;i<len;++i)
+        {
+            total_sum_of_post+=post_of_letters_name[i];
+        }
+
+        total_sum_of_post_str=to_string(total_sum_of_post);
+
+        if(total_sum_of_post>9)
+        {
+            last_digit=total_sum_of_post_str[total_sum_of_post_str.size()-1];
+        }
+        else
+            last_digit=total_sum_of_post_str;
+    }
+
+    finalllllllll_id=first_two_digit_str+five_more_digits_str+eight_and_ninth_digits_str+last_digit;
+    return finalllllllll_id;
 }
 
 // DRIVER CLASS PROPS
@@ -875,26 +909,20 @@ void Order::enqueue(const string &name, const DriverNode *driver, const string &
     {
         coded_id=generateOrderID((*driver).car.plate_num, (*driver).id, destination);
 
-        (*new_node).id=coded_id;
-        (*new_node).nama=name;
-        (*new_node).destination=destination;
-        (*new_node).next=NULL;
+        cout << "\n Order ID : " << coded_id << endl;
+        getch();
     }
 }
 
 void Order::orderForm(const DriverNode *driver)
 {
-    string input_name, input_destination;
-
-    cout << "\n	Masukkan Nama Anda : ";
-    cin.ignore();
-    getline(cin, input_name);
+    string input_destination;
 
     cout << "\n	Masukkan Tujuan Anda : ";
     cin.ignore();
     getline(cin, input_destination);
 
-
+    enqueue(name_input, driver, input_destination);
 }
 
 void Order::paginateAllDrivers()
