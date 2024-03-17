@@ -144,9 +144,7 @@ int main()
                 {
                     system("cls");
                     welcome();
-                    cout << "                     ====================================" << endl;
-                    cout << "                     |             Admin Login           |" << endl;
-                    cout << "                     ====================================" << endl;
+                    header("Admin Login");
                     printf("	Masukkan nama anda : ");
                     cin.ignore();
                     getline(cin, name_input);
@@ -257,9 +255,7 @@ int main()
                     {
                         system("cls");
                         welcome();
-                        cout << "                     ====================================" << endl;
-                        cout << "                     |             User Login            |" << endl;
-                        cout << "                     ====================================" << endl;
+                        header("User Login");
                         printf("	Masukkan nama anda : ");
                         cin.ignore();
                         getline(cin, name_input);
