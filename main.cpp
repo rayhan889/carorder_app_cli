@@ -117,7 +117,6 @@ void dashboardUser(const string &user_name);
 bool isAdmin(string);
 string generateDriverID(const string &name, char gender, Date date, int last_digit);
 string generateOrderID(const string &plate, const string &id_driver, const string &destination);
-string concatenateInts(int, int, int, int);
 string makeTime();
 // FUNCTION PROPS
 
@@ -342,7 +341,7 @@ void dashboardUser(const string &user_name)
     cout << endl;
 	cout << "	1. Order " << endl;
 	cout << "	2. History Order Anda " << endl;
-	cout << "	4. Exit Program " << endl;
+	cout << "	3. Exit Program " << endl;
 }
 
 bool isAdmin(string input)
@@ -358,17 +357,6 @@ bool isAdmin(string input)
         }
     }
     return found;
-}
-
-string concatenateInts(int first, int second, int third, int fourth)
-{
-    string strFirst=to_string(first);
-    string strSecond=to_string(second);
-    string strThird=to_string(third);
-    string strFourth=to_string(fourth);
-    string result=first<10 ? "0"+strFirst+strSecond+strThird+strFourth : strFirst+strSecond+strThird+strFourth;
-
-    return result;
 }
 
 string generateDriverID(const string &name, char gender, Date date, int last_digit)
@@ -410,7 +398,12 @@ string generateDriverID(const string &name, char gender, Date date, int last_dig
     int two_first_digit=last_post > first_post ? (last_post-first_post) : (first_post-last_post);
     int third_digit=gender=='L' ? 1 : gender=='l' ? 1 : gender=='P' ? 0 : gender=='p' ? 0 : -1;
     int fourth_digit=((day_last_digit+month_last_digit)+year_last_digit)%9;
-    id=concatenateInts(two_first_digit, third_digit, fourth_digit, last_digit);
+
+    string strFirst=to_string(two_first_digit);
+    string strSecond=to_string(third_digit);
+    string strThird=to_string(fourth_digit);
+    string strFourth=to_string(last_digit);
+    id=two_first_digit<10 ? "0"+strFirst+strSecond+strThird+strFourth : strFirst+strSecond+strThird+strFourth;
 
     return id;
 }
