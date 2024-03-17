@@ -112,6 +112,7 @@ class Order
 
 // FUNCTION PROPS
 void welcome();
+void header(string);
 void dashboardAdmin(const string &admin_name);
 void dashboardUser(const string &user_name);
 bool isAdmin(string);
@@ -311,13 +312,18 @@ void welcome(){
 	cout << endl;
 }
 
+void header(string title)
+{
+    cout << "                     ====================================" << endl;
+	cout << "                     |          " << title << "          |" << endl;
+	cout << "                     ====================================" << endl;
+}
+
 void dashboardAdmin(const string &admin_name)
 {
     system("cls");
     welcome();
-    cout << "                     ====================================" << endl;
-	cout << "                     |           Dashboard Admin         |" << endl;
-	cout << "                     ====================================" << endl;
+    header("Dashboard Admin");
 	cout << "                     Selamat Datang - "<< admin_name << endl;
     cout << endl;
 	cout << "	1. Menambahkan Data Driver " << endl;
@@ -334,9 +340,7 @@ void dashboardUser(const string &user_name)
 {
     system("cls");
     welcome();
-    cout << "                     ====================================" << endl;
-	cout << "                     |           Dashboard User          |" << endl;
-	cout << "                     ====================================" << endl;
+    header("Dashboard User");
 	cout << "                     Selamat Datang - "<< user_name << endl;
     cout << endl;
 	cout << "	1. Order " << endl;
@@ -538,9 +542,7 @@ void Driver::displayOne(DriverNode *data)
 {
     system("cls");
 	welcome();
-	cout << "                     ====================================" << endl;
-	cout << "                     |             Data Driver           |" << endl;
-	cout << "                     ====================================" << endl;
+	header("Data Driver");
     cout << endl;
     cout << "	ID                  : "<<(*data).id<<endl;
     cout << "	Nama                : "<<(*data).name<<endl;
@@ -596,9 +598,7 @@ void Driver::addForm()
 {
     system("cls");
 	welcome();
-	cout << "                     ====================================" << endl;
-	cout << "                     |          Tambah Data Driver       |" << endl;
-	cout << "                     ====================================" << endl;
+	header("Tambah Data Driver");
     cout << endl;
     string name, address;
     char gender;
@@ -636,9 +636,7 @@ void Driver::display()
 {
     system("cls");
 	welcome();
-	cout << "                     ====================================" << endl;
-	cout << "                     |             List Driver           |" << endl;
-	cout << "                     ====================================" << endl;
+	header("List Driver");
     cout << endl;
     DriverNode *current=head;
     int no=1;
@@ -680,9 +678,7 @@ void Driver::paginate()
         {
             system("cls");
             welcome();
-            cout << "                     ====================================" << endl;
-            cout << "                     |    List Driver (Pagination Mode)  |" << endl;
-            cout << "                     ====================================" << endl;
+            header("List Driver(Pagination Mode)");
             cout << endl;
             cout << "	ID                  : "<<(*current).id<<endl;
             cout << "	Nama                : "<<(*current).name<<endl;
@@ -746,9 +742,7 @@ void Driver::updateForm()
         DriverNode *found_node;
         system("cls");
         welcome();
-        cout << "                     ====================================" << endl;
-        cout << "                     |          Update Data Driver       |" << endl;
-        cout << "                     ====================================" << endl;
+        header("Update Data Driver");
         cout << endl;
 
         display();
@@ -990,9 +984,7 @@ void Order::paginateAllDrivers()
         {
             system("cls");
             welcome();
-            cout << "                     ====================================" << endl;
-            cout << "                     |           Pilih Driver Anda       |" << endl;
-            cout << "                     ====================================" << endl;
+            header("Pilih Driver Anda");
             cout << endl;
             cout << "	ID                  : "<<(*current).id<<endl;
             cout << "	Nama                : "<<(*current).name<<endl;
@@ -1049,9 +1041,7 @@ void Order::orderSummary(OrderNode *data)
 {
     system("cls");
     welcome();
-    cout << "                     ====================================" << endl;
-    cout << "                     |           Rangkuman Order         |" << endl;
-    cout << "                     ====================================" << endl;
+    header("Rangkuman Order");
     cout << endl;
     cout << "	ID                  : "<<(*data).id<<endl;
     cout << "	Nama Pelanggan      : "<<(*data).nama<<endl;
@@ -1073,9 +1063,7 @@ void Order::showFirstOrder()
         {
             system("cls");
             welcome();
-            cout << "                     ====================================" << endl;
-            cout << "                     |    List Order(Pagination Mode)    |" << endl;
-            cout << "                     ====================================" << endl;
+            =header("List Order(Pagination Mode)");
             cout << endl;
             if(current!=NULL)
             {
@@ -1168,9 +1156,7 @@ void Order::display()
 {
     system("cls");
 	welcome();
-	cout << "                     ====================================" << endl;
-	cout << "                     |             Pesanan Anda          |" << endl;
-	cout << "                     ====================================" << endl;
+	header("Pesanan Anda");
     cout << endl;
     OrderNode *current=front;
     int no=1;
