@@ -61,7 +61,8 @@ class Driver
         }
         void createNode(const string &name, const string &address, char gender, const Date &birthdate, const Car &car);
         void addForm();
-        void display();
+        void displayAll();
+        void showDriverProperties(const DriverNode *data);
         void displayOne(DriverNode *data);
         DriverNode *searchOne(const string &id);
         string incDuplicate(const string &id);
@@ -92,10 +93,10 @@ class Order
         {
             return driver->getTail();
         }
-        void displayAllDrivers()
+        void getDriverProperties(DriverNode *data)
         {
             if(driver)
-                driver->display();
+                 driver->showDriverProperties(data);
             else
                 cout << "	Class Driver tidak terinisialisasi " << endl;
         }
@@ -164,7 +165,7 @@ int main()
                                 break;
                             case 2:
                                 {
-                                    d.display();
+                                    d.displayAll();
                                     cout << "	Ketik enter untuk kembali!" << endl;
                                     getch();
                                 }
@@ -214,7 +215,7 @@ int main()
                                     {
                                         struct DriverNode *found_driver;
                                         string id;
-                                        d.display();
+                                        d.displayAll();
                                         cout << "	Masukkan ID Driver : ";
                                         cin.ignore(); getline(cin, id);
                                         found_driver=d.searchOne(id);
@@ -628,7 +629,19 @@ void Driver::addForm()
     getch();
 }
 
-void Driver::display()
+void Driver::showDriverProperties(const DriverNode *data)
+{
+    cout << "	ID                  : "<<data->id<<endl;
+    cout << "	Nama                : "<<data->name<<endl;
+    cout << "	Alamat              : "<<data->address<<endl;
+    cout << "	Jenis Kelamin (L/P) : "<<data->gender<<endl;
+    cout << "	Tanggal Lahir       : "<<data->birthdate.day<<" "<<data->birthdate.month<<" "<<data->birthdate.year<<endl;
+    cout << "	Merk Kendaraan      : "<<data->car.name<<endl;
+    cout << "	Plat Nomor          : "<<data->car.plate_num;
+    cout << endl;
+}
+
+void Driver::displayAll()
 {
     system("cls");
 	welcome();
@@ -649,13 +662,7 @@ void Driver::display()
         while(current!=NULL)
         {
             cout << "     " << no++ << ". " << endl;
-            cout << "	ID                  : "<<(*current).id<<endl;
-            cout << "	Nama                : "<<(*current).name<<endl;
-            cout << "	Alamat              : "<<(*current).address<<endl;
-            cout << "	Jenis Kelamin (L/P) : "<<(*current).gender<<endl;
-            cout << "	Tanggal Lahir       : "<<(*current).birthdate.day<<" "<<(*current).birthdate.month<<" "<<(*current).birthdate.year<<endl;
-            cout << "	Merk Kendaraan      : "<<(*current).car.name<<endl;
-            cout << "	Plat Nomor          : "<<(*current).car.plate_num;
+            showDriverProperties(current);
             cout << endl;
             current=(*current).next;
         }
@@ -676,13 +683,7 @@ void Driver::paginate()
             welcome();
             header("List Driver(Pagination Mode)");
             cout << endl;
-            cout << "	ID                  : "<<(*current).id<<endl;
-            cout << "	Nama                : "<<(*current).name<<endl;
-            cout << "	Alamat              : "<<(*current).address<<endl;
-            cout << "	Jenis Kelamin (L/P) : "<<(*current).gender<<endl;
-            cout << "	Tanggal Lahir       : "<<(*current).birthdate.day<<" "<<(*current).birthdate.month<<" "<<(*current).birthdate.year<<endl;
-            cout << "	Merk Kendaraan      : "<<(*current).car.name<<endl;
-            cout << "	Plat Nomor          : "<<(*current).car.plate_num<<endl;
+            showDriverProperties(current);
 
             cout << "	1. Next " << endl;
             cout << "	2. Previous " << endl;
@@ -741,7 +742,7 @@ void Driver::updateForm()
         header("Update Data Driver");
         cout << endl;
 
-        display();
+        displayAll();
 
         cout << "	Masukkan ID Driver : ";
         cin.ignore();
@@ -982,13 +983,7 @@ void Order::paginateAllDrivers()
             welcome();
             header("Pilih Driver Anda");
             cout << endl;
-            cout << "	ID                  : "<<(*current).id<<endl;
-            cout << "	Nama                : "<<(*current).name<<endl;
-            cout << "	Alamat              : "<<(*current).address<<endl;
-            cout << "	Jenis Kelamin (L/P) : "<<(*current).gender<<endl;
-            cout << "	Tanggal Lahir       : "<<(*current).birthdate.day<<" "<<(*current).birthdate.month<<" "<<(*current).birthdate.year<<endl;
-            cout << "	Merk Kendaraan      : "<<(*current).car.name<<endl;
-            cout << "	Plat Nomor          : "<<(*current).car.plate_num<<endl;
+            getDriverProperties(current);
 
             cout << "	1. Next " << endl;
             cout << "	2. Previous " << endl;
@@ -1059,7 +1054,7 @@ void Order::showFirstOrder()
         {
             system("cls");
             welcome();
-            =header("List Order(Pagination Mode)");
+            header("List Order(Pagination Mode)");
             cout << endl;
             if(current!=NULL)
             {
