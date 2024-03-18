@@ -17,18 +17,12 @@ struct Date {
     int year;
 };
 
-struct Car {
-    string name;
-    string plate_num;
-};
-
 struct DriverNode {
     string id;
     string name;
     string address;
     char gender;
     Date birthdate;
-    Car car;
     DriverNode *next;
 };
 
@@ -42,6 +36,7 @@ struct OrderNode {
 };
 
 struct CarNode {
+    string id;
     string plate_num;
     string type;
     string brand;
@@ -66,7 +61,7 @@ class Driver
         {
             return tail;
         }
-        void createNode(const string &name, const string &address, char gender, const Date &birthdate, const Car &car);
+        void createNode(const string &name, const string &address, char gender, const Date &birthdate);
         void addForm();
         void displayAll();
         void showDriverProperties(const DriverNode *data);
@@ -79,6 +74,20 @@ class Driver
         void deleteNode(const string &id);
         template <typename T>
         void updateNode(int option, T new_value, DriverNode *old_node);
+};
+
+class Car
+{
+    private:
+        CarNode *top;
+    public:
+        Car()
+        {
+            top=NULL;
+        }
+        void push(const string &plate_num, const string &type, const string &brand);
+        Car pop();
+        void display();
 };
 
 class Order
@@ -553,7 +562,7 @@ void Driver::displayOne(DriverNode *data)
     getch();
 }
 
-void Driver::createNode(const string &name, const string &address, char gender, const Date &birthdate, const Car &car)
+void Driver::createNode(const string &name, const string &address, char gender, const Date &birthdate)
 {
     DriverNode *new_node, *found_node;
     string coded_id;
@@ -576,7 +585,6 @@ void Driver::createNode(const string &name, const string &address, char gender, 
     (*new_node).address=address;
     (*new_node).gender=gender;
     (*new_node).birthdate=birthdate;
-    (*new_node).car=car;
     (*new_node).next=NULL;
 
     if(head==NULL)
@@ -600,7 +608,6 @@ void Driver::addForm()
     string name, address;
     char gender;
     Date birthdate;
-    Car car;
 
     cout << "	Masukkan nama                : ";
     cin.ignore();
@@ -615,14 +622,7 @@ void Driver::addForm()
     cout << "	Masukkan tgl lahir           : ";
     scanf("%d %d %d", &birthdate.day, &birthdate.month, &birthdate.year);
 
-    cout << "	Merk Kendaraan               : ";
-    cin.ignore();
-    getline(cin, car.name);
-
-    cout << "	Plat Nomor                   : ";
-    getline(cin, car.plate_num);
-
-    createNode(name, address, gender, birthdate, car);
+    createNode(name, address, gender, birthdate);
 
     cout << endl;
     cout << "	Berhasil menambahkan data!!";
@@ -635,9 +635,7 @@ void Driver::showDriverProperties(const DriverNode *data)
     cout << "	Nama                : "<<data->name<<endl;
     cout << "	Alamat              : "<<data->address<<endl;
     cout << "	Jenis Kelamin (L/P) : "<<data->gender<<endl;
-    cout << "	Tanggal Lahir       : "<<data->birthdate.day<<" "<<data->birthdate.month<<" "<<data->birthdate.year<<endl;
-    cout << "	Merk Kendaraan      : "<<data->car.name<<endl;
-    cout << "	Plat Nomor          : "<<data->car.plate_num;
+    cout << "	Tanggal Lahir       : "<<data->birthdate.day<<" "<<data->birthdate.month<<" "<<data->birthdate.year;
     cout << endl;
 }
 
@@ -918,7 +916,6 @@ void Order::showOrderProperties(const OrderNode *data)
     cout << "	Nama Pelanggan      : "<<data->nama<<endl;
     cout << "	Tujuan              : "<<data->destination<<endl;
     cout << "	Nama Driver         : "<<data->driver->name<<endl;
-    cout << "	Mobil/Plat Nomor    : "<<data->driver->car.name<<"/"<<data->driver->car.plate_num<<endl;
     cout << "	Waktu Order         : "<<data->order_time<<endl;
     cout << endl;
 }
@@ -932,7 +929,7 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
         cout << "\n	Antrian Penuh" << endl;
     else
     {
-        coded_id=generateOrderID((*driver).car.plate_num, (*driver).id, destination);
+        coded_id=generateOrderID("L 1234 MM", (*driver).id, destination);
 
         new_node->id=coded_id;
         new_node->nama=name_input;
@@ -950,6 +947,7 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
         }
 
         system("cls");
+        welcome();
         header("Rangkuman Order");
         cout << endl;
         showOrderProperties(new_node);
