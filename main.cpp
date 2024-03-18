@@ -85,9 +85,12 @@ class Car
         {
             top=NULL;
         }
+        void pushForm();
         void push(const string &plate_num, const string &type, const string &brand);
         Car pop();
         void display();
+        int isEmpty();
+        int isFull(CarNode *p);
 };
 
 class Order
@@ -141,6 +144,7 @@ string makeTime();
 int main()
 {
     Driver d;
+    Car c;
     Order o(&d);
     int option;
 
@@ -260,11 +264,14 @@ int main()
                                 o.showFirstOrder();
                                 break;
                             case 8:
+                                c.pushForm();
+                                break;
+                            case 9:
                                 break;
                             default:
                                 printf("Invalid Choice...");
                             }
-                        }while(option!=8);
+                        }while(option!=9);
                     }
                     break;
                 }
@@ -346,7 +353,8 @@ void dashboardAdmin(const string &admin_name)
 	cout << "	5. Update Data Driver " << endl;
 	cout << "	6. Hapus Data Driver " << endl;
 	cout << "	7. Cek Data Order Pelanggan " << endl;
-	cout << "	8. Exit Program " << endl;
+	cout << "	8. Tambah Unit Mobil " << endl;
+	cout << "	9. Exit Program " << endl;
 }
 
 void dashboardUser(const string &user_name)
@@ -1177,3 +1185,74 @@ int Order::countNodes()
     return counter;
 }
 // ORDER CLASS PROPS
+
+// CAR CLASS PROPS
+int Car::isEmpty()
+{
+    if(top==NULL)
+        return 1;
+
+    return 0;
+}
+
+int Car::isFull(CarNode *p)
+{
+    if(p==NULL)
+        return 1;
+
+    return 0;
+}
+
+void Car::push(const string &plate_num, const string &type, const string &brand)
+{
+    CarNode *new_car;
+    new_car=new CarNode;
+    int status=0;
+
+    if(isFull()==1)
+    {
+        cout << "	Stack penuh!";
+        getch();
+    }
+    else
+    {
+        new_car->plate_num=plate_num;
+        new_car->type=type;
+        new_car->brand=brand;
+        new_car->next=top;
+        top=new_car;
+        status=1;
+    }
+
+    if(status==1)
+    {
+        cout << "\n	Unit Mobil Berhasil Ditambahkan!"<<endl;
+        getch();
+    }
+    else
+    {
+        cout << "\n	Unit Mobil GAGAL Ditambahkan!"<<endl;
+        getch();
+    }
+}
+
+void Car::pushForm()
+{
+    system("cls");
+	welcome();
+	header("Tambah Unit Mobil");
+    cout << endl;
+
+    string plate_num, type, brand;
+
+    cout << "	Masukkan plat nomor mobil    : ";
+    cin.ignore();
+    getline(cin, plate_num);
+
+    cout << "	Masukkan tipe mobil          : ";
+    getline(cin, type);
+
+    cout << "	Masukkan brand mobil         : ";
+    getline(cin, brand);
+}
+// CAR CLASS PROPS
