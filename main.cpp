@@ -41,6 +41,13 @@ struct OrderNode {
     OrderNode *next;
 };
 
+struct CarNode {
+    string plate_num;
+    string type;
+    string brand;
+    CarNode *next;
+};
+
 class Driver
 {
     private:
@@ -103,12 +110,12 @@ class Order
         void enqueue(const string &name, DriverNode *driver, const string &destination);
         void orderForm(DriverNode *driver);
         void paginateAllDrivers();
+        void showOrderProperties(const OrderNode *data);
         void showFirstOrder();
         int countNodes();
         void history();
         int dequeue();
         void display();
-        void orderSummary(OrderNode *data);
 };
 
 // FUNCTION PROPS
@@ -541,14 +548,7 @@ void Driver::displayOne(DriverNode *data)
 	welcome();
 	header("Data Driver");
     cout << endl;
-    cout << "	ID                  : "<<(*data).id<<endl;
-    cout << "	Nama                : "<<(*data).name<<endl;
-    cout << "	Alamat              : "<<(*data).address<<endl;
-    cout << "	Jenis Kelamin (L/P) : "<<(*data).gender<<endl;
-    cout << "	Tanggal Lahir       : "<<(*data).birthdate.day<<" "<<(*data).birthdate.month<<" "<<(*data).birthdate.year<<endl;
-    cout << "	Merk Kendaraan      : "<<(*data).car.name<<endl;
-    cout << "	Plat Nomor          : "<<(*data).car.plate_num<<endl;
-    cout << endl;
+    showDriverProperties(data);
     cout << "	Ketik enter untuk kembali!";
     getch();
 }
@@ -912,6 +912,17 @@ int Driver::countNodes()
 // DRIVER CLASS PROPS
 
 // ORDER CLASS PROPS
+void Order::showOrderProperties(const OrderNode *data)
+{
+    cout << "	ID                  : "<<data->id<<endl;
+    cout << "	Nama Pelanggan      : "<<data->nama<<endl;
+    cout << "	Tujuan              : "<<data->destination<<endl;
+    cout << "	Nama Driver         : "<<data->driver->name<<endl;
+    cout << "	Mobil/Plat Nomor    : "<<data->driver->car.name<<"/"<<data->driver->car.plate_num<<endl;
+    cout << "	Waktu Order         : "<<data->order_time<<endl;
+    cout << endl;
+}
+
 void Order::enqueue(const string &name, DriverNode *driver, const string &destination)
 {
     string coded_id;
@@ -938,7 +949,10 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
             rear=new_node;
         }
 
-        orderSummary(new_node);
+        system("cls");
+        header("Rangkuman Order");
+        cout << endl;
+        showOrderProperties(new_node);
 
         cout << "\n	Order Berhasil Dilakukan!"<<endl;
         getch();
@@ -1028,20 +1042,6 @@ void Order::paginateAllDrivers()
     }
 }
 
-void Order::orderSummary(OrderNode *data)
-{
-    system("cls");
-    welcome();
-    header("Rangkuman Order");
-    cout << endl;
-    cout << "	ID                  : "<<(*data).id<<endl;
-    cout << "	Nama Pelanggan      : "<<(*data).nama<<endl;
-    cout << "	Tujuan              : "<<(*data).destination<<endl;
-    cout << "	Nama Driver         : "<<(*data).driver->name<<endl;
-    cout << "	Mobil/Plat Nomor    : "<<(*data).driver->car.name<<"/"<<(*data).driver->car.plate_num<<endl;
-    cout << "	Waktu Order         : "<<(*data).order_time<<endl;
-}
-
 void Order::showFirstOrder()
 {
     OrderNode *current=front;
@@ -1058,12 +1058,7 @@ void Order::showFirstOrder()
             cout << endl;
             if(current!=NULL)
             {
-                cout << "	ID                  : "<<(*current).id<<endl;
-                cout << "	Nama Pelanggan      : "<<(*current).nama<<endl;
-                cout << "	Tujuan              : "<<(*current).destination<<endl;
-                cout << "	Nama Driver         : "<<(*current).driver->name<<endl;
-                cout << "	Mobil/Plat Nomor    : "<<(*current).driver->car.name<<"/"<<(*current).driver->car.plate_num<<endl;
-                cout << "	Waktu Order         : "<<(*current).order_time<<endl;
+                showOrderProperties(current);
             }
             else
             {
@@ -1164,13 +1159,7 @@ void Order::display()
         while(current!=NULL)
         {
             cout << "     " << no++ << ". " << endl;
-            cout << "	ID                  : "<<(*current).id<<endl;
-            cout << "	Nama Pelanggan      : "<<(*current).nama<<endl;
-            cout << "	Tujuan              : "<<(*current).destination<<endl;
-            cout << "	Nama Driver         : "<<(*current).driver->name<<endl;
-            cout << "	Mobil/Plat Nomor    : "<<(*current).driver->car.name<<"/"<<(*current).driver->car.plate_num<<endl;
-            cout << "	Waktu Order         : "<<(*current).order_time<<endl;
-            cout << endl;
+            showOrderProperties(current);
             current=(*current).next;
         }
         cout << endl;
