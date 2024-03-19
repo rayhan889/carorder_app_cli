@@ -36,7 +36,6 @@ struct OrderNode {
 };
 
 struct CarNode {
-    string id;
     string plate_num;
     string type;
     string brand;
@@ -87,10 +86,12 @@ class Car
         }
         void pushForm();
         void push(const string &plate_num, const string &type, const string &brand);
-        Car pop();
+        CarNode *pop();
         void display();
         int isEmpty();
         int isFull(CarNode *p);
+        int countNodes();
+        void showCarProperties(const CarNode *data);
 };
 
 class Order
@@ -267,11 +268,18 @@ int main()
                                 c.pushForm();
                                 break;
                             case 9:
+                                {
+                                    c.display();
+                                    cout << "	Ketik enter untuk kembali!" << endl;
+                                    getch();
+                                    break;
+                                }
+                            case 10:
                                 break;
                             default:
                                 printf("Invalid Choice...");
                             }
-                        }while(option!=9);
+                        }while(option!=10);
                     }
                     break;
                 }
@@ -354,7 +362,8 @@ void dashboardAdmin(const string &admin_name)
 	cout << "	6. Hapus Data Driver " << endl;
 	cout << "	7. Cek Data Order Pelanggan " << endl;
 	cout << "	8. Tambah Unit Mobil " << endl;
-	cout << "	9. Exit Program " << endl;
+	cout << "	9. Tampilkan Semua Data Mobil " << endl;
+	cout << "	10. Exit Program " << endl;
 }
 
 void dashboardUser(const string &user_name)
@@ -1209,7 +1218,7 @@ void Car::push(const string &plate_num, const string &type, const string &brand)
     new_car=new CarNode;
     int status=0;
 
-    if(isFull()==1)
+    if(isFull(new_car)==1)
     {
         cout << "	Stack penuh!";
         getch();
@@ -1236,6 +1245,75 @@ void Car::push(const string &plate_num, const string &type, const string &brand)
     }
 }
 
+CarNode *Car::pop()
+{
+    CarNode *t=top;
+    CarNode *x=NULL;
+
+    if(isEmpty()==1)
+        return x;
+    else
+    {
+        x->brand=top->brand;
+        x->plate_num=top->plate_num;
+        x->type=top->type;
+        x->next=NULL;
+        top=top->next;
+        delete t;
+    }
+    return x;
+}
+
+void Car::display()
+{
+    system("cls");
+	welcome();
+	header("List Kendaraan");
+    cout << endl;
+    CarNode *current=top;
+
+    int no=1;
+
+    if(current==NULL)
+    {
+        cout << "	List kendaraan kosong, tambahkan kendaraan terlebih dahulu! "<<endl;
+        getch();
+    }
+    else
+    {
+        int count_orders=countNodes();
+        cout << "	Jumlah Kendaraan : "<<count_orders<<endl;
+        while(current!=NULL)
+        {
+            cout << "     " << no++ << ". " << endl;
+            showCarProperties(current);
+            current=(*current).next;
+        }
+        cout << endl;
+    }
+}
+
+void Car::showCarProperties(const CarNode *data)
+{
+    cout << "	Plat Nomor          : "<<data->plate_num<<endl;
+    cout << "	Brand Mobil         : "<<data->brand<<endl;
+    cout << "	Tipe                : "<<data->type<<endl;
+    cout << endl;
+}
+
+int Car::countNodes()
+{
+    CarNode *current=top;
+
+    int counter=0;
+    while(current!=NULL)
+    {
+        counter++;
+        current=(*current).next;
+    }
+    return counter;
+}
+
 void Car::pushForm()
 {
     system("cls");
@@ -1254,5 +1332,7 @@ void Car::pushForm()
 
     cout << "	Masukkan brand mobil         : ";
     getline(cin, brand);
+
+    push(plate_num, type, brand);
 }
 // CAR CLASS PROPS
