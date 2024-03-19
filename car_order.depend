@@ -1,9 +1,36 @@
 # depslib dependency file v1.0
-1710686546 source:d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\main.cpp
+1710871268 source:d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\main.cpp
 	<iostream>
 	<string>
 	<cctype>
 	<conio.h>
+	"Driver.h"
+	"global_variable.h"
+
+1710869670 source:d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\driver.cpp
+	"Driver.h"
+
+1710869914 d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\driver.h
+	<iostream>
+	<string>
+	<conio.h>
+	"global_function.h"
+	"Date.h"
+
+1710870877 d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\global_function.h
+	<string>
+	<iostream>
+	<conio.h>
 	<chrono>
 	<ctime>
+	"Date.h"
+
+1710869900 d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\date.h
+
+1710871430 d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\global_variable.h
+	<string>
+
+1710871182 source:d:\unesa\semester 2\matkul\struktur data\assigments\praktikum\car_order\global_function.cpp
+	"global_function.h"
+	"global_variable.h"
 
