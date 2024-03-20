@@ -17,7 +17,7 @@ int Car::isFull(CarNode *p)
     return 0;
 }
 
-void Car::push(const string &plate_num, const string &type, const string &brand)
+void Car::push(CarData data)
 {
     CarNode *new_car;
     new_car=new CarNode;
@@ -30,9 +30,9 @@ void Car::push(const string &plate_num, const string &type, const string &brand)
     }
     else
     {
-        new_car->plate_num=plate_num;
-        new_car->type=type;
-        new_car->brand=brand;
+        new_car->data.plate_num=data.plate_num;
+        new_car->data.type=data.type;
+        new_car->data.brand=data.brand;
         new_car->next=top;
         top=new_car;
         status=1;
@@ -50,23 +50,22 @@ void Car::push(const string &plate_num, const string &type, const string &brand)
     }
 }
 
-CarNode *Car::pop()
+int Car::pop()
 {
     CarNode *t=top;
-    CarNode *x=NULL;
+    CarData c_dt;
 
     if(isEmpty()==1)
-        return x;
+        return 0;
     else
     {
-        x->brand=top->brand;
-        x->plate_num=top->plate_num;
-        x->type=top->type;
-        x->next=NULL;
+        c_dt.plate_num=top->data.plate_num;
+        c_dt.brand=top->data.brand;
+        c_dt.type=top->data.type;
         top=top->next;
         delete t;
     }
-    return x;
+    return 1;
 }
 
 void Car::display()
@@ -100,9 +99,9 @@ void Car::display()
 
 void Car::showCarProperties(const CarNode *data)
 {
-    cout << "	Plat Nomor          : "<<data->plate_num<<endl;
-    cout << "	Brand Mobil         : "<<data->brand<<endl;
-    cout << "	Tipe                : "<<data->type<<endl;
+    cout << "	Plat Nomor          : "<<data->data.plate_num<<endl;
+    cout << "	Brand Mobil         : "<<data->data.brand<<endl;
+    cout << "	Tipe                : "<<data->data.type<<endl;
     cout << endl;
 }
 
@@ -126,18 +125,18 @@ void Car::pushForm()
 	header("Tambah Unit Mobil");
     cout << endl;
 
-    string plate_num, type, brand;
+    CarData c_dt;
 
     cout << "	Masukkan plat nomor mobil    : ";
     cin.ignore();
-    getline(cin, plate_num);
+    getline(cin, c_dt.plate_num);
 
     cout << "	Masukkan tipe mobil          : ";
-    getline(cin, type);
+    getline(cin, c_dt.type);
 
     cout << "	Masukkan brand mobil         : ";
-    getline(cin, brand);
+    getline(cin, c_dt.brand);
 
-    push(plate_num, type, brand);
+    push(c_dt);
 }
 // CAR CLASS PROPS

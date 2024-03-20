@@ -143,15 +143,18 @@ int main()
                                 }
                             case 10:
                                 {
-                                    CarNode *car=NULL;
-                                    car=c.pop();
-                                    if(car==NULL)
+                                    int status=0;
+                                    status=c.pop();
+                                    if(status==0)
                                     {
-                                        cout << "	Gagal mengeluarkan mobil!" << endl;
+                                        cout << "	Unit mobil sedang kosong!" << endl;
                                         getch();
                                     }
                                     else
-                                        c.showCarProperties(car);
+                                    {
+                                        cout << "	Berhasil mengeluarkan mobil!" << endl;
+                                        getch();
+                                    }
                                     break;
                                 }
                             default:

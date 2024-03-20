@@ -8,10 +8,14 @@
 
 using namespace std;
 
-struct CarNode {
+struct CarData {
     string plate_num;
     string type;
     string brand;
+};
+
+struct CarNode {
+    CarData data;
     CarNode *next;
 };
 
@@ -25,8 +29,8 @@ class Car
             top=NULL;
         }
         void pushForm();
-        void push(const string &plate_num, const string &type, const string &brand);
-        CarNode *pop();
+        void push(CarData data);
+        int pop();
         void display();
         int isEmpty();
         int isFull(CarNode *p);
