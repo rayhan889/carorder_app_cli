@@ -141,26 +141,10 @@ int main()
                                     getch();
                                     break;
                                 }
-                            case 10:
-                                {
-                                    int status=0;
-                                    status=c.pop();
-                                    if(status==0)
-                                    {
-                                        cout << "	Unit mobil sedang kosong!" << endl;
-                                        getch();
-                                    }
-                                    else
-                                    {
-                                        cout << "	Berhasil mengeluarkan mobil!" << endl;
-                                        getch();
-                                    }
-                                    break;
-                                }
                             default:
                                 printf("Invalid Choice...");
                             }
-                        }while(option!=11);
+                        }while(option!=10);
                     }
                     break;
                 }

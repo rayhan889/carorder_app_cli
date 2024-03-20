@@ -4,15 +4,10 @@
 #include <string>
 #include <conio.h>
 #include "global_function.h"
+#include "global_variable.h"
 #include "Date.h"
 
 using namespace std;
-
-struct CarData {
-    string plate_num;
-    string type;
-    string brand;
-};
 
 struct CarNode {
     CarData data;
@@ -36,6 +31,7 @@ class Car
         int isFull(CarNode *p);
         int countNodes();
         void showCarProperties(const CarNode *data);
+        CarData stackTop();
 };
 
 #endif // CAR_H_INCLUDED

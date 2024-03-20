@@ -38,8 +38,7 @@ void dashboardAdmin(const string &admin_name)
 	cout << "	7. Cek Data Order Pelanggan " << endl;
 	cout << "	8. Tambah Unit Mobil " << endl;
 	cout << "	9. Tampilkan Semua Data Mobil " << endl;
-	cout << "	10. Coba hapus mobil " << endl;
-	cout << "	11. Exit Program " << endl;
+	cout << "	10. Exit Program " << endl;
 }
 
 void dashboardUser(const string &user_name)

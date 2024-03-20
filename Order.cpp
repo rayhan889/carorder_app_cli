@@ -16,12 +16,15 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
 {
     string coded_id;
     OrderNode *new_node;
+    CarData c_dt;
+    int status=0;
     new_node=new OrderNode;
     if(new_node==NULL)
         cout << "\n	Antrian Penuh" << endl;
     else
     {
-        coded_id=generateOrderID("L 1234 MM", (*driver).id, destination);
+        c_dt=getTopStackOfCar();
+        coded_id=generateOrderID(c_dt.plate_num, (*driver).id, destination);
 
         new_node->id=coded_id;
         new_node->nama=NAME_INPUT;
@@ -38,26 +41,40 @@ void Order::enqueue(const string &name, DriverNode *driver, const string &destin
             rear=new_node;
         }
 
-        system("cls");
-        welcome();
-        header("Rangkuman Order");
-        cout << endl;
-        showOrderProperties(new_node);
+        status=getPopOfCarFunc();
 
-        cout << "\n	Order Berhasil Dilakukan!"<<endl;
-        getch();
+        if(status==0)
+        {
+            cout << "	Order GAGAL Dilakukan!"<<endl;
+            getch();
+        }
+        else
+        {
+            system("cls");
+            welcome();
+            header("Rangkuman Order");
+            cout << endl;
+            showOrderProperties(new_node);
+
+            cout << "\n	Order Berhasil Dilakukan!"<<endl;
+            getch();
+        }
     }
 }
 
 int Order::dequeue()
 {
     OrderNode *p;
+    CarData c_dt;
     if(front==NULL)
         return 0;
     else
     {
         p=front;
         front=front->next;
+        c_dt=TEMP_CARS_LIST.back();
+        TEMP_CARS_LIST.pop_back();
+        getPushOfCarFunc(c_dt);
         delete p;
     }
     return 1;

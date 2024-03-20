@@ -1,4 +1,5 @@
 #include "Car.h"
+#include <vector>
 
 // CAR CLASS PROPS
 int Car::isEmpty()
@@ -59,9 +60,8 @@ int Car::pop()
         return 0;
     else
     {
-        c_dt.plate_num=top->data.plate_num;
-        c_dt.brand=top->data.brand;
-        c_dt.type=top->data.type;
+        c_dt=top->data;
+        TEMP_CARS_LIST.push_back(c_dt);
         top=top->next;
         delete t;
     }
@@ -138,5 +138,15 @@ void Car::pushForm()
     getline(cin, c_dt.brand);
 
     push(c_dt);
+}
+
+CarData Car::stackTop()
+{
+    CarData c_dt;
+    if(top)
+    {
+        c_dt=top->data;
+    }
+    return c_dt;
 }
 // CAR CLASS PROPS

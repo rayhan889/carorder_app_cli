@@ -47,6 +47,18 @@ class Order
         {
             return car->countNodes();
         }
+        void getPushOfCarFunc(CarData c_dt)
+        {
+            return car->push(c_dt);
+        }
+        int getPopOfCarFunc()
+        {
+            return car->pop();
+        }
+        CarData getTopStackOfCar()
+        {
+            return car->stackTop();
+        }
         void getDriverProperties(DriverNode *data)
         {
             if(driver)
